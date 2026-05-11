@@ -464,6 +464,94 @@
     }
     .phrase-nav button:hover { border-color: var(--green); color: var(--green); }
 
+    /* ===== 場面別学習 ===== */
+    .scene-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .scene-tab {
+      padding: 10px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      background: var(--white);
+      font-size: 14px;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--gray);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .scene-tab:hover { border-color: var(--green-mid); color: var(--green); }
+    .scene-tab.active { background: var(--green); border-color: var(--green); color: white; }
+    .scene-intro {
+      background: var(--green-light);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      color: var(--green);
+      line-height: 1.6;
+    }
+    .scene-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-bottom: 28px; }
+    .scene-word-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.2s;
+    }
+    .scene-word-card:hover { border-color: var(--green-mid); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .scene-word-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .scene-word-emoji { font-size: 28px; }
+    .scene-word-en { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--dark); }
+    .scene-word-phonetic { font-size: 12px; color: var(--gray); }
+    .scene-word-ja { font-size: 13px; color: var(--green); font-weight: 500; margin-bottom: 6px; }
+    .scene-word-ex { font-size: 12px; color: var(--gray); font-style: italic; margin-bottom: 10px; line-height: 1.5; }
+    .scene-phrase-section { margin-top: 8px; }
+    .scene-phrase-title { font-size: 12px; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+    .scene-phrase-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .scene-phrase-text { flex: 1; }
+    .scene-phrase-en { font-size: 14px; color: var(--dark); margin-bottom: 3px; font-style: italic; }
+    .scene-phrase-ja { font-size: 12px; color: var(--gray); }
+    .scene-phrase-play {
+      padding: 5px 10px;
+      background: var(--green-light);
+      border: none;
+      border-radius: 8px;
+      color: var(--green);
+      font-size: 12px;
+      cursor: pointer;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .scene-photo-prompt {
+      background: var(--white);
+      border: 1.5px dashed var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-top: 8px;
+    }
+    .scene-photo-prompt-icon { font-size: 32px; margin-bottom: 8px; }
+    .scene-photo-prompt-text { font-size: 14px; color: var(--dark); margin-bottom: 6px; font-weight: 500; }
+    .scene-photo-prompt-sub { font-size: 13px; color: var(--gray); margin-bottom: 14px; line-height: 1.6; }
+    .scene-copy-btn {
+      padding: 9px 20px;
+      background: var(--green);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 13px;
+      font-family: 'Noto Sans JP', sans-serif;
+      cursor: pointer;
+    }
+
     /* レスポンシブ */
     @media (max-width: 600px) {
       .hero h1 { font-size: 26px; }
@@ -483,6 +571,7 @@
     <button onclick="showSection('flash', this)">カード</button>
     <button onclick="showSection('ai', this)">AI レシピ</button>
     <button onclick="showSection('speak', this)">発音</button>
+    <button onclick="showSection('scene', this)">場面学習</button>
   </nav>
 </header>
 
@@ -517,6 +606,11 @@
           <div class="hero-card-icon">🎤</div>
           <div class="hero-card-title">発音チェック</div>
           <div class="hero-card-desc">マイクで話して発音を練習する</div>
+        </div>
+        <div class="hero-card" onclick="showSection('scene', document.querySelector('nav button:nth-child(7)'))">
+          <div class="hero-card-icon">📷</div>
+          <div class="hero-card-title">場面別学習</div>
+          <div class="hero-card-desc">キッチン・授業・通学の場面で使える単語</div>
         </div>
       </div>
     </div>
@@ -643,6 +737,18 @@
         <button onclick="nextPhrase()">次へ →</button>
       </div>
     </div>
+  <!-- 場面別学習 -->
+  <div class="section" id="scene">
+    <div class="section-title">場面別学習</div>
+    <div class="section-sub">場面を選ぶと、その状況で使える単語とフレーズが音声付きで学べます。</div>
+
+    <div class="scene-tabs">
+      <button class="scene-tab active" onclick="setScene('kitchen', this)">🍳 キッチン・調理中</button>
+      <button class="scene-tab" onclick="setScene('classroom', this)">📚 専門学校の授業中</button>
+      <button class="scene-tab" onclick="setScene('commute', this)">🚃 通学・通勤中</button>
+    </div>
+
+    <div id="scene-content"></div>
   </div>
 </main>
 
@@ -714,6 +820,7 @@ function showSection(id, btn) {
   if (id === 'flash') initFlash();
   if (id === 'dict') initDict();
   if (id === 'speak') initSpeak();
+  if (id === 'scene') initScene();
 }
 
 // ===== 辞書 =====
@@ -962,6 +1069,120 @@ function similarity(a, b) {
   const aW = a.split(' '), bW = b.split(' ');
   const matches = aW.filter(w => bW.includes(w)).length;
   return matches / Math.max(aW.length, bW.length);
+}
+
+// ===== 場面別学習 =====
+const sceneData = {
+  kitchen: {
+    intro: '🍳 調理中・キッチンで使う単語とフレーズです。実習中にスマホで確認しながら使ってみましょう！',
+    words: [
+      { emoji: '❄️', en: 'Refrigerator', phonetic: '/rɪˈfrɪdʒəreɪtər/', ja: '冷蔵庫', ex: 'Store leftovers in the refrigerator.' },
+      { emoji: '🍆', en: 'Eggplant', phonetic: '/ˈɛɡplænt/', ja: 'なす', ex: 'Slice the eggplant thinly.' },
+      { emoji: '🫕', en: 'Stockpot', phonetic: '/ˈstɒkpɒt/', ja: '寸胴鍋', ex: 'Boil the stock in a large stockpot.' },
+      { emoji: '🔥', en: 'Burner', phonetic: '/ˈbɜːrnər/', ja: 'バーナー・コンロ', ex: 'Turn down the burner to low heat.' },
+      { emoji: '🧊', en: 'Freezer', phonetic: '/ˈfriːzər/', ja: '冷凍庫', ex: 'Put the dough in the freezer for 30 minutes.' },
+      { emoji: '🥬', en: 'Leafy greens', phonetic: '/ˈliːfi ɡriːnz/', ja: '葉物野菜', ex: 'Wash the leafy greens thoroughly.' },
+    ],
+    phrases: [
+      { en: 'Can you pass me the ladle?', ja: 'お玉を取ってもらえますか？' },
+      { en: 'The oven is preheated to 180°C.', ja: 'オーブンは180度に予熱されています。' },
+      { en: 'Simmer on low heat for 20 minutes.', ja: '弱火で20分煮てください。' },
+      { en: 'Season to taste with salt and pepper.', ja: '塩こしょうで味を調えてください。' },
+    ]
+  },
+  classroom: {
+    intro: '📚 専門学校の調理実習・授業中に使う専門用語です。器具や食材の英語名をマスターしましょう！',
+    words: [
+      { emoji: '🥣', en: 'Whisk', phonetic: '/wɪsk/', ja: '泡立て器・泡立てる', ex: 'Use a whisk to beat the eggs.' },
+      { emoji: '🥄', en: 'Ladle', phonetic: '/ˈleɪdl/', ja: 'お玉', ex: 'Serve the soup with a ladle.' },
+      { emoji: '🫙', en: 'Colander', phonetic: '/ˈkɒləndər/', ja: 'ざる', ex: 'Drain the pasta in a colander.' },
+      { emoji: '🍳', en: 'Spatula', phonetic: '/ˈspætʃʊlə/', ja: 'フライ返し', ex: 'Flip the fish with a spatula.' },
+      { emoji: '🔪', en: 'Chef\'s knife', phonetic: '/ʃefs naɪf/', ja: '牛刀・シェフズナイフ', ex: 'A chef\'s knife is essential in the kitchen.' },
+      { emoji: '📏', en: 'Bench scraper', phonetic: '/bentʃ ˈskreɪpər/', ja: 'スケッパー', ex: 'Use a bench scraper to divide the dough.' },
+    ],
+    phrases: [
+      { en: 'What is this tool called in English?', ja: 'この器具は英語でなんと言いますか？' },
+      { en: 'Please demonstrate the technique.', ja: 'その技術を実演してください。' },
+      { en: 'Fold in the ingredients gently.', ja: '食材をやさしく折り込んでください。' },
+      { en: 'The dish needs more seasoning.', ja: 'この料理にはもう少し調味料が必要です。' },
+    ]
+  },
+  commute: {
+    intro: '🚃 通学・通勤中に街で見かける英語表現です。身の回りのものを英語で確認してみましょう！',
+    words: [
+      { emoji: '🏪', en: 'Convenience store', phonetic: '/kənˈviːniəns stɔːr/', ja: 'コンビニ', ex: 'I stop by the convenience store every morning.' },
+      { emoji: '🚌', en: 'Bus stop', phonetic: '/bʌs stɒp/', ja: 'バス停', ex: 'I wait at the bus stop for 10 minutes.' },
+      { emoji: '🥗', en: 'Deli', phonetic: '/ˈdeli/', ja: 'デリ・惣菜コーナー', ex: 'The deli has fresh sandwiches every day.' },
+      { emoji: '🍱', en: 'Takeout', phonetic: '/ˈteɪkaʊt/', ja: 'テイクアウト', ex: 'I ordered takeout for lunch.' },
+      { emoji: '☕', en: 'Café', phonetic: '/ˈkæfeɪ/', ja: 'カフェ', ex: 'I grab a coffee at the café before class.' },
+      { emoji: '🏫', en: 'Campus', phonetic: '/ˈkæmpəs/', ja: 'キャンパス・学校構内', ex: 'The cafeteria is on the main campus.' },
+    ],
+    phrases: [
+      { en: 'Excuse me, where is the nearest station?', ja: '最寄り駅はどこですか？' },
+      { en: 'I\'d like a coffee to go, please.', ja: 'コーヒーをテイクアウトでお願いします。' },
+      { en: 'Is this seat taken?', ja: 'この席は空いていますか？' },
+      { en: 'Could I have a receipt, please?', ja: 'レシートをいただけますか？' },
+    ]
+  }
+};
+
+let currentScene = 'kitchen';
+function setScene(scene, btn) {
+  currentScene = scene;
+  document.querySelectorAll('.scene-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderScene();
+}
+function initScene() { currentScene = 'kitchen'; document.querySelectorAll('.scene-tab')[0].classList.add('active'); renderScene(); }
+function renderScene() {
+  const d = sceneData[currentScene];
+  document.getElementById('scene-content').innerHTML = `
+    <div class="scene-intro">${d.intro}</div>
+    <div class="scene-grid">
+      ${d.words.map(w => `
+        <div class="scene-word-card">
+          <div class="scene-word-top">
+            <div class="scene-word-emoji">${w.emoji}</div>
+            <div>
+              <div class="scene-word-en">${w.en}</div>
+              <div class="scene-word-phonetic">${w.phonetic}</div>
+            </div>
+          </div>
+          <div class="scene-word-ja">${w.ja}</div>
+          <div class="scene-word-ex">"${w.ex}"</div>
+          <button class="speak-btn" onclick="speakWord('${w.en.replace(/'/g, "\\'")}')">🔊 発音を聞く</button>
+        </div>
+      `).join('')}
+    </div>
+    <div class="scene-phrase-section">
+      <div class="scene-phrase-title">📝 この場面で使えるフレーズ</div>
+      ${d.phrases.map(p => `
+        <div class="scene-phrase-card">
+          <div class="scene-phrase-text">
+            <div class="scene-phrase-en">"${p.en}"</div>
+            <div class="scene-phrase-ja">${p.ja}</div>
+          </div>
+          <button class="scene-phrase-play" onclick="speakWord('${p.en.replace(/'/g, "\\'")}')">🔊 聞く</button>
+        </div>
+      `).join('')}
+    </div>
+    <div class="scene-photo-prompt">
+      <div class="scene-photo-prompt-icon">📸</div>
+      <div class="scene-photo-prompt-text">写真を撮って単語を調べたい場合</div>
+      <div class="scene-photo-prompt-sub">気になるものを写真に撮り、<br>下のボタンでClaude.aiに質問できます。</div>
+      <button class="scene-copy-btn" onclick="copyPhotoPrompt()">📋 質問文をコピーする</button>
+    </div>`;
+}
+function copyPhotoPrompt() {
+  const sceneNames = { kitchen: 'キッチン・調理中', classroom: '専門学校の授業中', commute: '通学・通勤中' };
+  const prompt = `私は料理英語を勉強している学生です。${sceneNames[currentScene]}の場面で見つけたものの写真を見てください。
+①この物の英語名（発音記号付き）
+②短い例文（英語＋日本語訳）
+③関連する料理・調理の英単語を2〜3個
+を教えてください。`;
+  navigator.clipboard.writeText(prompt).then(() => {
+    alert('コピーしました！Claude.aiを開いて、写真と一緒に貼り付けてください。');
+  }).catch(() => { alert(prompt); });
 }
 
 // 初期化
