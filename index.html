@@ -819,51 +819,42 @@ function setLevel(level, btn) {
   document.querySelectorAll('.ai-toggle').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
-async function generateRecipe() {
+function generateRecipe() {
   const ingredients = document.getElementById('ai-ingredients').value.trim();
   if (!ingredients) { alert('材料を入力してください。'); return; }
-  document.getElementById('ai-result-area').style.display = 'none';
-  document.getElementById('ai-loading').style.display = 'block';
-  const levelDesc = recipeLevel === 'beginner' ? '初心者向け（重要単語に日本語訳を添えて）' : recipeLevel === 'intermediate' ? '中級者向け（英語のみ、やや複雑な表現を使って）' : '上級者向け（本格的な英語レシピの表現で）';
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: `You are a culinary English teacher for Japanese cooking students. Generate a short English recipe (4-5 steps) based on given ingredients. Level: ${levelDesc}.
+  const levelDesc = recipeLevel === 'beginner' ? '初級（重要な調理動詞に日本語訳を添えて）' : recipeLevel === 'intermediate' ? '中級（英語のみ）' : '上級（本格的な英語で）';
+  const prompt = `あなたは料理英語の先生です。以下の材料を使った英語レシピを作ってください。
 
-Return ONLY a JSON object like this (no markdown, no backticks):
-{
-  "title": "Recipe name in English",
-  "steps": ["Step 1 text", "Step 2 text", "Step 3 text", "Step 4 text"],
-  "keywords": [{"word": "sauté", "ja": "炒める"}, {"word": "simmer", "ja": "煮る"}]
-}
+材料：${ingredients}
+難易度：${levelDesc}
 
-For keywords, pick 4-6 important cooking verbs or terms from your recipe. Keep steps concise.`,
-        messages: [{ role: 'user', content: `Ingredients: ${ingredients}` }]
-      })
-    });
-    const data = await res.json();
-    const text = data.content?.[0]?.text || '';
-    const clean = text.replace(/```json|```/g, '').trim();
-    const recipe = JSON.parse(clean);
-    document.getElementById('ai-loading').style.display = 'none';
-    document.getElementById('ai-result-title').textContent = '🍽 ' + recipe.title;
-    document.getElementById('ai-result-body').innerHTML = recipe.steps.map((s, i) =>
-      `<p style="margin-bottom:10px"><strong>${i+1}.</strong> ${s}</p>`
-    ).join('');
-    document.getElementById('ai-vocab').innerHTML = `
-      <div class="ai-vocab-title">📚 重要単語</div>
-      <div class="ai-vocab-list">${recipe.keywords.map(k =>
-        `<span class="ai-vocab-item" onclick="speakWord('${k.word}')" title="${k.ja}">${k.word} = ${k.ja}</span>`
-      ).join('')}</div>`;
+以下の形式で出力してください：
+1. レシピ名（英語）
+2. 手順（英語で4〜5ステップ）
+3. 重要単語リスト（調理動詞を4〜6個、英語＝日本語の形で）`;
+
+  navigator.clipboard.writeText(prompt).then(() => {
     document.getElementById('ai-result-area').style.display = 'block';
-  } catch(e) {
-    document.getElementById('ai-loading').style.display = 'none';
-    alert('生成に失敗しました。もう一度試してください。');
-  }
+    document.getElementById('ai-result-title').textContent = '✅ プロンプトをコピーしました！';
+    document.getElementById('ai-result-body').innerHTML = `
+      <div style="background:var(--green-light);border-radius:10px;padding:16px;margin-bottom:12px;font-size:14px;line-height:1.8">
+        <strong>次の手順でレシピを生成できます：</strong><br><br>
+        <strong>① </strong><a href="https://claude.ai" target="_blank" style="color:var(--green);font-weight:500">claude.ai</a> を新しいタブで開く<br>
+        <strong>② </strong>チャット欄に <kbd style="background:white;border:1px solid var(--border);padding:2px 6px;border-radius:4px">Cmd + V</kbd> で貼り付け<br>
+        <strong>③ </strong>送信してレシピを受け取る<br>
+        <strong>④ </strong>このページに戻って内容を確認する
+      </div>
+      <div style="font-size:13px;color:var(--gray)">コピーされたプロンプト：<br><em>${prompt.replace(/\n/g,'<br>')}</em></div>`;
+    document.getElementById('ai-vocab').innerHTML = '';
+  }).catch(() => {
+    // クリップボードが使えない場合はテキストを表示
+    document.getElementById('ai-result-area').style.display = 'block';
+    document.getElementById('ai-result-title').textContent = '📋 以下をコピーしてください';
+    document.getElementById('ai-result-body').innerHTML = `
+      <textarea style="width:100%;height:160px;font-size:13px;padding:10px;border:1px solid var(--border);border-radius:8px" onclick="this.select()">${prompt}</textarea>
+      <p style="font-size:13px;color:var(--gray);margin-top:8px">↑ テキストを選択してコピー → <a href="https://claude.ai" target="_blank" style="color:var(--green)">claude.ai</a> に貼り付けてください</p>`;
+    document.getElementById('ai-vocab').innerHTML = '';
+  });
 }
 
 // ===== 発音チェック =====
