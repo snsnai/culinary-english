@@ -330,6 +330,140 @@
       cursor: pointer;
     }
 
+    /* ===== AI レシピ ===== */
+    .ai-wrap { max-width: 680px; }
+    .ai-label { font-size: 13px; color: var(--gray); margin-bottom: 8px; }
+    textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: 'Noto Sans JP', sans-serif;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+      background: var(--white);
+      color: var(--dark);
+    }
+    textarea:focus { border-color: var(--green-mid); }
+    .ai-options { display: flex; gap: 24px; margin: 14px 0; flex-wrap: wrap; }
+    .ai-option-group {}
+    .ai-option-label { font-size: 12px; color: var(--gray); margin-bottom: 6px; }
+    .ai-toggle-row { display: flex; gap: 6px; }
+    .ai-toggle {
+      padding: 5px 14px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: transparent;
+      font-size: 12px;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--gray);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .ai-toggle.active { background: var(--green); border-color: var(--green); color: white; }
+    .ai-generate-btn {
+      width: 100%;
+      padding: 13px;
+      background: var(--green);
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 15px;
+      font-family: 'Noto Sans JP', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 4px;
+    }
+    .ai-generate-btn:hover { background: var(--green-mid); }
+    .ai-result-area {
+      margin-top: 20px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .ai-result-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+    .ai-result-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--green); }
+    .ai-result-body { font-size: 14px; line-height: 2; color: var(--dark); }
+    .ai-result-body .kw { background: var(--green-light); color: var(--green); padding: 1px 6px; border-radius: 4px; font-weight: 500; }
+    .ai-vocab { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .ai-vocab-title { font-size: 12px; color: var(--gray); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .ai-vocab-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .ai-vocab-item { background: var(--green-light); color: var(--green); padding: 4px 12px; border-radius: 16px; font-size: 13px; cursor: pointer; }
+    .ai-vocab-item:hover { background: var(--green); color: white; }
+    .ai-loading { text-align: center; padding: 40px; color: var(--gray); font-size: 15px; }
+    .ai-loading-icon { font-size: 32px; margin-bottom: 12px; animation: spin 2s linear infinite; }
+    @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+
+    /* ===== 発音チェック ===== */
+    .speak-wrap { max-width: 500px; margin: 0 auto; text-align: center; }
+    .phrase-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+    .phrase-counter { font-size: 12px; color: var(--gray); margin-bottom: 16px; }
+    .phrase-en { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--dark); margin-bottom: 10px; line-height: 1.5; }
+    .phrase-ja { font-size: 14px; color: var(--gray); margin-bottom: 16px; }
+    .phrase-listen {
+      padding: 7px 18px;
+      background: var(--green-light);
+      border: none;
+      border-radius: 8px;
+      color: var(--green);
+      font-size: 13px;
+      font-family: 'Noto Sans JP', sans-serif;
+      cursor: pointer;
+    }
+    .mic-area { margin-bottom: 20px; }
+    .mic-btn {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: var(--green);
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-bottom: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 8px;
+    }
+    .mic-btn:hover { background: var(--green-mid); transform: scale(1.05); }
+    .mic-btn.recording { background: #ef4444; animation: pulse 1s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+    .mic-label { font-size: 13px; color: var(--gray); margin-top: 8px; }
+    .speak-result {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .speak-result-label { font-size: 12px; color: var(--gray); margin-bottom: 6px; }
+    .speak-result-text { font-size: 16px; color: var(--dark); margin-bottom: 10px; font-style: italic; }
+    .speak-score { font-size: 14px; font-weight: 500; }
+    .speak-score.good { color: var(--green); }
+    .speak-score.ok { color: #f59e0b; }
+    .speak-score.retry { color: #ef4444; }
+    .phrase-nav { display: flex; gap: 10px; justify-content: center; }
+    .phrase-nav button {
+      padding: 10px 24px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--white);
+      font-size: 14px;
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--gray);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .phrase-nav button:hover { border-color: var(--green); color: var(--green); }
+
     /* レスポンシブ */
     @media (max-width: 600px) {
       .hero h1 { font-size: 26px; }
@@ -347,6 +481,8 @@
     <button onclick="showSection('dict', this)">辞書</button>
     <button onclick="showSection('quiz', this)">クイズ</button>
     <button onclick="showSection('flash', this)">カード</button>
+    <button onclick="showSection('ai', this)">AI レシピ</button>
+    <button onclick="showSection('speak', this)">発音</button>
   </nav>
 </header>
 
@@ -372,10 +508,15 @@
           <div class="hero-card-title">フラッシュカード</div>
           <div class="hero-card-desc">タップして単語を素早く覚える</div>
         </div>
-        <div class="hero-card" style="border-style:dashed; opacity:0.6; cursor:default;">
+        <div class="hero-card" onclick="showSection('ai', document.querySelector('nav button:nth-child(5)'))">
           <div class="hero-card-icon">🤖</div>
           <div class="hero-card-title">AI レシピ生成</div>
-          <div class="hero-card-desc">Phase 3 で追加予定</div>
+          <div class="hero-card-desc">材料を入れると英語レシピを自動生成</div>
+        </div>
+        <div class="hero-card" onclick="showSection('speak', document.querySelector('nav button:nth-child(6)'))">
+          <div class="hero-card-icon">🎤</div>
+          <div class="hero-card-title">発音チェック</div>
+          <div class="hero-card-desc">マイクで話して発音を練習する</div>
         </div>
       </div>
     </div>
@@ -440,6 +581,69 @@
       </div>
     </div>
   </div>
+  <!-- AI レシピ生成 -->
+  <div class="section" id="ai">
+    <div class="section-title">AI レシピ生成</div>
+    <div class="section-sub">材料を入力すると、英語レシピと重要単語の解説を自動生成します。</div>
+    <div class="ai-wrap">
+      <div class="ai-input-area">
+        <div class="ai-label">材料を入力（日本語・英語どちらでも）</div>
+        <textarea id="ai-ingredients" placeholder="例：卵、バター、砂糖、小麦粉、牛乳" rows="3"></textarea>
+        <div class="ai-options">
+          <div class="ai-option-group">
+            <div class="ai-option-label">難易度</div>
+            <div class="ai-toggle-row">
+              <button class="ai-toggle active" onclick="setLevel('beginner', this)">初級</button>
+              <button class="ai-toggle" onclick="setLevel('intermediate', this)">中級</button>
+              <button class="ai-toggle" onclick="setLevel('advanced', this)">上級</button>
+            </div>
+          </div>
+        </div>
+        <button class="ai-generate-btn" onclick="generateRecipe()">🤖 レシピを生成する</button>
+      </div>
+      <div class="ai-result-area" id="ai-result-area" style="display:none">
+        <div class="ai-result-header">
+          <div class="ai-result-title" id="ai-result-title"></div>
+          <button class="speak-btn" style="width:auto;padding:5px 14px" onclick="speakWord(document.getElementById('ai-result-body').innerText)">🔊 全文を読む</button>
+        </div>
+        <div class="ai-result-body" id="ai-result-body"></div>
+        <div class="ai-vocab" id="ai-vocab"></div>
+      </div>
+      <div class="ai-loading" id="ai-loading" style="display:none">
+        <div class="ai-loading-icon">🍳</div>
+        <div>レシピを生成中...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 発音チェック -->
+  <div class="section" id="speak">
+    <div class="section-title">発音チェック</div>
+    <div class="section-sub">フレーズを見て、マイクボタンを押して話してみましょう。</div>
+    <div class="speak-wrap">
+      <div class="phrase-card" id="phrase-card">
+        <div class="phrase-counter" id="phrase-counter"></div>
+        <div class="phrase-en" id="phrase-en"></div>
+        <div class="phrase-ja" id="phrase-ja"></div>
+        <button class="phrase-listen" onclick="listenPhrase()">🔊 お手本を聞く</button>
+      </div>
+      <div class="mic-area">
+        <button class="mic-btn" id="mic-btn" onclick="toggleRecording()">
+          <span id="mic-icon">🎤</span>
+        </button>
+        <div class="mic-label" id="mic-label">タップして話す</div>
+      </div>
+      <div class="speak-result" id="speak-result" style="display:none">
+        <div class="speak-result-label">あなたの発音：</div>
+        <div class="speak-result-text" id="speak-result-text"></div>
+        <div class="speak-score" id="speak-score"></div>
+      </div>
+      <div class="phrase-nav">
+        <button onclick="prevPhrase()">← 前へ</button>
+        <button onclick="nextPhrase()">次へ →</button>
+      </div>
+    </div>
+  </div>
 </main>
 
 <script>
@@ -479,6 +683,7 @@ function showSection(id, btn) {
   if (id === 'quiz') startQuiz();
   if (id === 'flash') initFlash();
   if (id === 'dict') initDict();
+  if (id === 'speak') initSpeak();
 }
 
 // ===== 辞書 =====
@@ -606,6 +811,137 @@ function flipCard() {
 }
 function flashNext() { flashIdx = (flashIdx + 1) % words.length; renderFlash(); }
 function flashPrev() { flashIdx = (flashIdx - 1 + words.length) % words.length; renderFlash(); }
+
+// ===== AI レシピ生成 =====
+let recipeLevel = 'beginner';
+function setLevel(level, btn) {
+  recipeLevel = level;
+  document.querySelectorAll('.ai-toggle').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+async function generateRecipe() {
+  const ingredients = document.getElementById('ai-ingredients').value.trim();
+  if (!ingredients) { alert('材料を入力してください。'); return; }
+  document.getElementById('ai-result-area').style.display = 'none';
+  document.getElementById('ai-loading').style.display = 'block';
+  const levelDesc = recipeLevel === 'beginner' ? '初心者向け（重要単語に日本語訳を添えて）' : recipeLevel === 'intermediate' ? '中級者向け（英語のみ、やや複雑な表現を使って）' : '上級者向け（本格的な英語レシピの表現で）';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: `You are a culinary English teacher for Japanese cooking students. Generate a short English recipe (4-5 steps) based on given ingredients. Level: ${levelDesc}.
+
+Return ONLY a JSON object like this (no markdown, no backticks):
+{
+  "title": "Recipe name in English",
+  "steps": ["Step 1 text", "Step 2 text", "Step 3 text", "Step 4 text"],
+  "keywords": [{"word": "sauté", "ja": "炒める"}, {"word": "simmer", "ja": "煮る"}]
+}
+
+For keywords, pick 4-6 important cooking verbs or terms from your recipe. Keep steps concise.`,
+        messages: [{ role: 'user', content: `Ingredients: ${ingredients}` }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+    const clean = text.replace(/```json|```/g, '').trim();
+    const recipe = JSON.parse(clean);
+    document.getElementById('ai-loading').style.display = 'none';
+    document.getElementById('ai-result-title').textContent = '🍽 ' + recipe.title;
+    document.getElementById('ai-result-body').innerHTML = recipe.steps.map((s, i) =>
+      `<p style="margin-bottom:10px"><strong>${i+1}.</strong> ${s}</p>`
+    ).join('');
+    document.getElementById('ai-vocab').innerHTML = `
+      <div class="ai-vocab-title">📚 重要単語</div>
+      <div class="ai-vocab-list">${recipe.keywords.map(k =>
+        `<span class="ai-vocab-item" onclick="speakWord('${k.word}')" title="${k.ja}">${k.word} = ${k.ja}</span>`
+      ).join('')}</div>`;
+    document.getElementById('ai-result-area').style.display = 'block';
+  } catch(e) {
+    document.getElementById('ai-loading').style.display = 'none';
+    alert('生成に失敗しました。もう一度試してください。');
+  }
+}
+
+// ===== 発音チェック =====
+const phrases = [
+  { en: 'Can you pass me the ladle?', ja: 'お玉を取ってもらえますか？' },
+  { en: 'Simmer it for 10 minutes.', ja: '10分間弱火で煮てください。' },
+  { en: 'Whisk the eggs until frothy.', ja: '卵を泡立てて泡立ててください。' },
+  { en: 'Dice the onions finely.', ja: '玉ねぎをみじん切りにしてください。' },
+  { en: 'Fold in the egg whites gently.', ja: '卵白をやさしく折り込んでください。' },
+  { en: 'Season with salt and pepper.', ja: '塩こしょうで味を調えてください。' },
+];
+let phraseIdx = 0, isRecording = false, recognition = null;
+
+function initSpeak() {
+  phraseIdx = 0;
+  renderPhrase();
+}
+function renderPhrase() {
+  const p = phrases[phraseIdx];
+  document.getElementById('phrase-counter').textContent = (phraseIdx + 1) + ' / ' + phrases.length;
+  document.getElementById('phrase-en').textContent = p.en;
+  document.getElementById('phrase-ja').textContent = p.ja;
+  document.getElementById('speak-result').style.display = 'none';
+  document.getElementById('mic-btn').classList.remove('recording');
+  document.getElementById('mic-icon').textContent = '🎤';
+  document.getElementById('mic-label').textContent = 'タップして話す';
+}
+function listenPhrase() {
+  speakWord(phrases[phraseIdx].en);
+}
+function nextPhrase() { phraseIdx = (phraseIdx + 1) % phrases.length; renderPhrase(); }
+function prevPhrase() { phraseIdx = (phraseIdx - 1 + phrases.length) % phrases.length; renderPhrase(); }
+
+function toggleRecording() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    alert('お使いのブラウザは音声認識に対応していません。Chromeをお使いください。');
+    return;
+  }
+  if (isRecording) {
+    recognition?.stop();
+    return;
+  }
+  isRecording = true;
+  document.getElementById('mic-btn').classList.add('recording');
+  document.getElementById('mic-icon').textContent = '⏹';
+  document.getElementById('mic-label').textContent = '話しています...';
+  document.getElementById('speak-result').style.display = 'none';
+
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  recognition.onresult = (e) => {
+    const said = e.results[0][0].transcript.trim().toLowerCase();
+    const target = phrases[phraseIdx].en.toLowerCase().replace(/[?.!,]/g, '');
+    const saidClean = said.replace(/[?.!,]/g, '');
+    const score = similarity(target, saidClean);
+    const scoreEl = document.getElementById('speak-score');
+    document.getElementById('speak-result-text').textContent = '"' + said + '"';
+    if (score >= 0.8) { scoreEl.textContent = '✓ 素晴らしい発音です！'; scoreEl.className = 'speak-score good'; }
+    else if (score >= 0.5) { scoreEl.textContent = '△ もう少し練習しましょう！'; scoreEl.className = 'speak-score ok'; }
+    else { scoreEl.textContent = '✗ もう一度試してみましょう。'; scoreEl.className = 'speak-score retry'; }
+    document.getElementById('speak-result').style.display = 'block';
+  };
+  recognition.onend = () => {
+    isRecording = false;
+    document.getElementById('mic-btn').classList.remove('recording');
+    document.getElementById('mic-icon').textContent = '🎤';
+    document.getElementById('mic-label').textContent = 'タップして話す';
+  };
+  recognition.onerror = () => recognition.onend();
+  recognition.start();
+}
+function similarity(a, b) {
+  const aW = a.split(' '), bW = b.split(' ');
+  const matches = aW.filter(w => bW.includes(w)).length;
+  return matches / Math.max(aW.length, bW.length);
+}
 
 // 初期化
 initDict();
