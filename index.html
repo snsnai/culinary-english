@@ -801,14 +801,48 @@ const words = [
   { en: 'Al dente', phonetic: '/æl ˈdenti/', ja: 'アルデンテ（少し固め）', emoji: '🍝', ex: 'Cook the pasta al dente.', cat: '味・食感' },
 ];
 
-// ===== クイズデータ =====
+// ===== クイズデータ（辞書の単語から自動生成） =====
 const quizData = [
-  { before: '', after: ' the butter and sugar until light and fluffy.', answer: 'Cream', options: ['Cream', 'Pour', 'Simmer', 'Slice'], hint: 'バターと砂糖を白くふわっとするまで混ぜる動作です。' },
-  { before: '', after: ' the flour into the bowl to remove any lumps.', answer: 'Sift', options: ['Boil', 'Sift', 'Whisk', 'Fold'], hint: 'ダマをなくすために粉をふるう動作です。' },
-  { before: '', after: ' the egg whites gently into the batter.', answer: 'Fold', options: ['Chop', 'Fold', 'Grill', 'Drain'], hint: '泡をつぶさないようにやさしく混ぜ込む動作です。' },
-  { before: 'Bring to a boil, then ', after: ' on low heat for 20 minutes.', answer: 'simmer', options: ['simmer', 'fry', 'bake', 'steam'], hint: '沸騰させた後、弱火でゆっくり加熱する方法です。' },
-  { before: '', after: ' the onions until they are translucent.', answer: 'Sauté', options: ['Sauté', 'Boil', 'Freeze', 'Whisk'], hint: '少量の油で炒める調理法です。' },
+  { before: '', after: ' the flour into the bowl to remove any lumps.', answer: 'Sift', options: ['Sift', 'Fold', 'Whisk', 'Dice'], hint: 'ダマをなくすために粉をふるう動作です。' },
+  { before: '', after: ' the egg whites gently into the batter.', answer: 'Fold', options: ['Fold', 'Sift', 'Grate', 'Braise'], hint: '泡をつぶさないようにやさしく混ぜ込む動作です。' },
+  { before: 'Bring to a boil, then ', after: ' on low heat for 20 minutes.', answer: 'simmer', options: ['simmer', 'dice', 'grate', 'blanch'], hint: '弱火でことこと煮る調理法です。' },
+  { before: '', after: ' the onions until they are golden.', answer: 'Sauté', options: ['Sauté', 'Blanch', 'Parboil', 'Reduce'], hint: '少量の油で炒める調理法です。' },
+  { before: '', after: ' the carrots into small cubes.', answer: 'Dice', options: ['Dice', 'Mince', 'Julienne', 'Grate'], hint: 'さいの目切りにする切り方です。' },
+  { before: '', after: ' the garlic cloves very finely.', answer: 'Mince', options: ['Mince', 'Dice', 'Fold', 'Reduce'], hint: 'みじん切りにする切り方です。' },
+  { before: '', after: ' the vegetables in boiling water briefly, then cool.', answer: 'Blanch', options: ['Blanch', 'Braise', 'Simmer', 'Marinate'], hint: '短時間湯通しする調理法です。' },
+  { before: 'Use a ', after: ' to serve the soup into bowls.', answer: 'Ladle', options: ['Ladle', 'Spatula', 'Colander', 'Tongs'], hint: 'スープをすくうための器具です。' },
+  { before: 'Drain the pasta using a ', after: '.', answer: 'Colander', options: ['Colander', 'Ladle', 'Grater', 'Peeler'], hint: '水切りに使う器具です。' },
+  { before: 'Flip the pancake gently with a ', after: '.', answer: 'Spatula', options: ['Spatula', 'Whisk', 'Tongs', 'Peeler'], hint: 'フライ返しとも呼ばれる器具です。' },
+  { before: 'Add a ', after: ' of salt to season the dish.', answer: 'Pinch', options: ['Pinch', 'Dash', 'Handful', 'Knob'], hint: '指でつまむ程度の少量を表す表現です。' },
+  { before: 'Add a ', after: ' of hot sauce for extra flavor.', answer: 'Dash', options: ['Dash', 'Pinch', 'Knob', 'Handful'], hint: 'ごく少量を表す分量の単語です。' },
+  { before: '', after: ' olive oil over the finished salad.', answer: 'Drizzle', options: ['Drizzle', 'Fold', 'Reduce', 'Deglaze'], hint: '少量をたらしかける動作です。' },
+  { before: '', after: ' the dough on a floured surface for 10 minutes.', answer: 'Knead', options: ['Knead', 'Fold', 'Whisk', 'Grate'], hint: 'パン生地などをこねる動作です。' },
+  { before: '', after: ' the cheese finely over the pasta.', answer: 'Grate', options: ['Grate', 'Mince', 'Dice', 'Julienne'], hint: 'おろし金を使う動作です。' },
+  { before: '', after: ' the carrots into thin matchstick strips.', answer: 'Julienne', options: ['Julienne', 'Dice', 'Mince', 'Grate'], hint: '千切りにする切り方です。' },
+  { before: '', after: ' the pan with white wine to lift the browned bits.', answer: 'Deglaze', options: ['Deglaze', 'Reduce', 'Simmer', 'Braise'], hint: '鍋底の旨みをワインなどで溶かす技法です。' },
+  { before: '', after: ' the chicken in olive oil and herbs overnight.', answer: 'Marinate', options: ['Marinate', 'Blanch', 'Braise', 'Parboil'], hint: '調味液に漬け込む調理法です。' },
+  { before: '', after: ' the sauce until it thickens and coats the back of a spoon.', answer: 'Reduce', options: ['Reduce', 'Simmer', 'Deglaze', 'Caramelize'], hint: '煮詰めて濃度を上げる調理法です。' },
+  { before: '', after: ' the onions slowly over low heat until sweet and brown.', answer: 'Caramelize', options: ['Caramelize', 'Sauté', 'Braise', 'Blanch'], hint: '糖分が焦げてキャラメル色になる調理法です。' },
+  { before: '', after: ' the potatoes before roasting to cut cooking time.', answer: 'Parboil', options: ['Parboil', 'Blanch', 'Braise', 'Simmer'], hint: '下茹ですることです。' },
+  { before: '', after: ' the beef with vegetables in a covered pot for 2 hours.', answer: 'Braise', options: ['Braise', 'Roast', 'Simmer', 'Parboil'], hint: '少量の液体で蒸し煮にする調理法です。' },
+  { before: '', after: ' the dish with fresh herbs before serving.', answer: 'Garnish', options: ['Garnish', 'Drizzle', 'Season', 'Reduce'], hint: '飾り付けをする動作です。' },
+  { before: 'Use a ', after: ' to beat the cream until stiff peaks form.', answer: 'Whisk', options: ['Whisk', 'Spatula', 'Ladle', 'Peeler'], hint: '泡立て器のことです。' },
+  { before: 'Use ', after: ' to flip the steak on the grill.', answer: 'Tongs', options: ['Tongs', 'Ladle', 'Spatula', 'Whisk'], hint: 'はさんでつかむ器具です。' },
+  { before: 'Use a ', after: ' to shred the carrots finely.', answer: 'Grater', options: ['Grater', 'Peeler', 'Colander', 'Tongs'], hint: 'おろし金のことです。' },
+  { before: 'Use a ', after: ' to remove the skin from the potato.', answer: 'Peeler', options: ['Peeler', 'Grater', 'Spatula', 'Ladle'], hint: '皮むき器のことです。' },
+  { before: 'Heat the milk gently in a ', after: ' over medium heat.', answer: 'Saucepan', options: ['Saucepan', 'Roasting pan', 'Colander', 'Stockpot'], hint: '片手鍋のことです。' },
+  { before: 'Place the chicken in a ', after: ' and roast for 1 hour.', answer: 'Roasting pan', options: ['Roasting pan', 'Saucepan', 'Colander', 'Ladle'], hint: 'ロースト用の天板です。' },
+  { before: 'Add the ', after: ' of one lemon to brighten the flavor.', answer: 'Zest', options: ['Zest', 'Clove', 'Stock', 'Dash'], hint: '柑橘類の皮を削ったものです。' },
+  { before: 'Add 500ml of chicken ', after: ' to the pot.', answer: 'Stock', options: ['Stock', 'Zest', 'Clove', 'Knob'], hint: 'だし・ブイヨンのことです。' },
+  { before: 'Crush two ', after: 's of garlic before adding.', answer: 'Clove', options: ['Clove', 'Zest', 'Pinch', 'Stock'], hint: 'ニンニクの「ひとかけ」を表す単語です。' },
+  { before: 'Add a ', after: ' of fresh herbs to finish the dish.', answer: 'Handful', options: ['Handful', 'Knob', 'Pinch', 'Dash'], hint: 'ひとつかみ分の量を表す表現です。' },
+  { before: 'Add a ', after: ' of butter to enrich the sauce.', answer: 'Knob', options: ['Knob', 'Handful', 'Dash', 'Pinch'], hint: 'バターのひとかけらを表す表現です。' },
+  { before: 'This stew has a rich, ', after: ' flavor from the miso.', answer: 'Savory', options: ['Savory', 'Crispy', 'Tender', 'Al dente'], hint: '塩気のある・うまみのある味を表す表現です。' },
+  { before: 'Cook the chicken until the meat is ', after: '.', answer: 'Tender', options: ['Tender', 'Crispy', 'Savory', 'Al dente'], hint: '柔らかく火が通った状態を表す表現です。' },
+  { before: 'Fry the chicken skin until it is golden and ', after: '.', answer: 'Crispy', options: ['Crispy', 'Tender', 'Savory', 'Al dente'], hint: 'カリカリ・サクサクの食感を表す表現です。' },
+  { before: 'Cook the pasta ', after: ' — firm to the bite.', answer: 'Al dente', options: ['Al dente', 'Tender', 'Crispy', 'Savory'], hint: '少し固めのパスタの茹で加減を表す言葉です。' },
 ];
+
 
 // ===== ナビゲーション =====
 function showSection(id, btn) {
@@ -869,9 +903,10 @@ function speakWord(word) {
 }
 
 // ===== クイズ =====
-let qIdx = 0, score = 0, answered = false;
+let qIdx = 0, score = 0, answered = false, wrongAnswers = [];
+
 function startQuiz() {
-  qIdx = 0; score = 0;
+  qIdx = 0; score = 0; wrongAnswers = [];
   document.getElementById('quiz-card').style.display = 'block';
   document.getElementById('score-screen').style.display = 'none';
   renderQuestion();
@@ -879,19 +914,16 @@ function startQuiz() {
 function renderQuestion() {
   answered = false;
   const q = quizData[qIdx];
-  // プログレス
   document.getElementById('quiz-progress').innerHTML = quizData.map((_, i) =>
     `<div class="prog-dot ${i < qIdx ? 'done' : i === qIdx ? 'current' : ''}"></div>`
   ).join('');
-  // 問題文
   document.getElementById('quiz-sentence').innerHTML =
-    (q.before ? q.before + ' ' : '') +
+    (q.before ? q.before : '') +
     `<span class="quiz-blank">　　　</span>` +
     q.after;
   document.getElementById('quiz-hint').textContent = '💡 ' + q.hint;
-  // 選択肢
   document.getElementById('options-grid').innerHTML = q.options.map(o =>
-    `<button class="opt-btn" onclick="answer('${o}')">${o}</button>`
+    `<button class="opt-btn" onclick="answer('${o.replace(/'/g,"\\'")}')">` + o + `</button>`
   ).join('');
   document.getElementById('quiz-feedback').textContent = '';
   document.getElementById('quiz-feedback').className = 'quiz-feedback';
@@ -902,7 +934,11 @@ function answer(choice) {
   answered = true;
   const q = quizData[qIdx];
   const isCorrect = choice === q.answer;
-  if (isCorrect) score++;
+  if (isCorrect) {
+    score++;
+  } else {
+    wrongAnswers.push({ q, chose: choice });
+  }
   document.querySelectorAll('.opt-btn').forEach(btn => {
     btn.disabled = true;
     if (btn.textContent === q.answer) btn.classList.add('correct');
@@ -916,13 +952,49 @@ function answer(choice) {
 function nextQuestion() {
   qIdx++;
   if (qIdx >= quizData.length) {
-    document.getElementById('quiz-card').style.display = 'none';
-    document.getElementById('score-screen').style.display = 'block';
-    document.getElementById('score-num').textContent = score + ' / ' + quizData.length + ' 正解';
+    showScoreScreen();
   } else {
     renderQuestion();
   }
 }
+function showScoreScreen() {
+  document.getElementById('quiz-card').style.display = 'none';
+  const screen = document.getElementById('score-screen');
+  screen.style.display = 'block';
+  const total = quizData.length;
+  const wrong = wrongAnswers.length;
+  const pct = Math.round(score / total * 100);
+  let medal = pct === 100 ? '🏆' : pct >= 80 ? '🥇' : pct >= 60 ? '🥈' : '🥉';
+  let comment = pct === 100 ? '完璧です！全問正解！' : pct >= 80 ? 'すばらしい！' : pct >= 60 ? 'よくできました！' : 'もう少し練習しましょう！';
+  let wrongHTML = '';
+  if (wrongAnswers.length > 0) {
+    wrongHTML = `
+      <div style="margin-top:20px;text-align:left">
+        <div style="font-size:13px;color:var(--gray);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px">❌ 間違えた問題（${wrong}問）</div>
+        ${wrongAnswers.map(w => `
+          <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;font-size:13px">
+            <div style="color:var(--dark);margin-bottom:4px">${(w.q.before || '') + '<span style="border-bottom:2px solid var(--green);padding:0 4px;color:var(--green);font-weight:500"> ' + w.q.answer + ' </span>' + w.q.after}</div>
+            <div style="color:#ef4444">あなたの答え：${w.chose}</div>
+            <div style="color:var(--green)">正解：${w.q.answer}</div>
+            <div style="color:var(--gray);margin-top:4px;font-style:italic">${w.q.hint}</div>
+          </div>
+        `).join('')}
+      </div>`;
+  }
+  screen.innerHTML = `
+    <div class="score-icon">${medal}</div>
+    <div class="score-title">${comment}</div>
+    <div class="score-num">${score} / ${total} 正解</div>
+    <div style="display:flex;justify-content:center;gap:20px;margin-bottom:16px;font-size:14px">
+      <span style="color:var(--green)">✓ 正解 ${score}問</span>
+      <span style="color:#ef4444">✗ 不正解 ${wrong}問</span>
+      <span style="color:var(--gray)">正答率 ${pct}%</span>
+    </div>
+    ${wrongHTML}
+    <button class="retry-btn" style="margin-top:20px" onclick="startQuiz()">もう一度挑戦する</button>
+  `;
+}
+
 
 // ===== フラッシュカード =====
 let flashIdx = 0, flipped = false;
