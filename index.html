@@ -630,7 +630,8 @@
   <!-- クイズ -->
   <div class="section" id="quiz">
     <div class="section-title">レシピ英語クイズ</div>
-    <div class="section-sub">英語レシピの空欄に当てはまる動詞を選んでください。</div>
+    <div class="section-sub">カテゴリを選んで、空欄に当てはまる単語を選んでください。</div>
+    <div class="category-row" id="quiz-cat-row"></div>
     <div class="quiz-wrap">
       <div class="quiz-progress" id="quiz-progress"></div>
       <div class="quiz-card" id="quiz-card">
@@ -641,20 +642,15 @@
         <div class="quiz-feedback" id="quiz-feedback"></div>
         <button class="next-btn" id="next-btn" onclick="nextQuestion()">次の問題 →</button>
       </div>
-      <div class="score-screen" id="score-screen">
-        <div class="score-icon">🎉</div>
-        <div class="score-title">クイズ完了！</div>
-        <div class="score-num" id="score-num"></div>
-        <p style="color:var(--gray);font-size:14px;margin-bottom:24px">よくできました！続けて練習しましょう。</p>
-        <button class="retry-btn" onclick="startQuiz()">もう一度挑戦する</button>
-      </div>
+      <div class="score-screen" id="score-screen" style="display:none"></div>
     </div>
   </div>
 
   <!-- フラッシュカード -->
   <div class="section" id="flash">
     <div class="section-title">フラッシュカード</div>
-    <div class="section-sub">カードをタップすると日本語訳が表示されます。</div>
+    <div class="section-sub">カテゴリを選んで、カードをタップすると日本語訳が表示されます。</div>
+    <div class="category-row" id="flash-cat-row"></div>
     <div class="flash-wrap">
       <div class="flash-counter" id="flash-counter"></div>
       <div class="flash-card" id="flash-card" onclick="flipCard()">
@@ -666,7 +662,7 @@
           <div class="flash-emoji" id="flash-emoji"></div>
           <div class="flash-ja" id="flash-ja"></div>
           <div class="flash-ex" id="flash-ex"></div>
-          <button class="flash-speak" onclick="event.stopPropagation(); speakWord(words[flashIdx].en)">🔊 発音を聞く</button>
+          <button class="flash-speak" onclick="event.stopPropagation(); speakWord(filteredFlashWords[flashIdx].en)">🔊 発音を聞く</button>
         </div>
       </div>
       <div class="flash-nav">
@@ -850,7 +846,7 @@ function showSection(id, btn) {
   document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   if (btn) btn.classList.add('active');
-  if (id === 'quiz') startQuiz();
+  if (id === 'quiz') initQuiz();
   if (id === 'flash') initFlash();
   if (id === 'dict') initDict();
   if (id === 'speak') initSpeak();
@@ -904,17 +900,53 @@ function speakWord(word) {
 
 // ===== クイズ =====
 let qIdx = 0, score = 0, answered = false, wrongAnswers = [];
+let quizCat = '全て', filteredQuiz = [];
 
+// クイズデータにカテゴリを対応付け
+const quizCatMap = {
+  'Sift':'動作','Fold':'動作','simmer':'動作','Sauté':'動作','Dice':'動作',
+  'Mince':'動作','Blanch':'動作','Drizzle':'動作','Knead':'動作','Grate':'動作',
+  'Julienne':'動作','Deglaze':'動作','Marinate':'動作','Reduce':'動作',
+  'Caramelize':'動作','Parboil':'動作','Braise':'動作','Garnish':'動作',
+  'Ladle':'器具','Colander':'器具','Spatula':'器具','Whisk':'器具',
+  'Tongs':'器具','Grater':'器具','Peeler':'器具','Saucepan':'器具','Roasting pan':'器具',
+  'Pinch':'分量','Dash':'分量','Handful':'分量','Knob':'分量',
+  'Zest':'食材','Stock':'食材','Clove':'食材',
+  'Savory':'味・食感','Tender':'味・食感','Crispy':'味・食感','Al dente':'味・食感',
+};
+
+function initQuiz() {
+  quizCat = '全て';
+  const cats = ['全て', '動作', '器具', '分量', '食材', '味・食感'];
+  document.getElementById('quiz-cat-row').innerHTML = cats.map(c =>
+    `<button class="cat-btn ${c === quizCat ? 'active' : ''}" onclick="setQuizCat('${c}', this)">${c}</button>`
+  ).join('');
+  updateFilteredQuiz();
+}
+function setQuizCat(cat, btn) {
+  quizCat = cat;
+  document.querySelectorAll('#quiz-cat-row .cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateFilteredQuiz();
+}
+function updateFilteredQuiz() {
+  filteredQuiz = quizCat === '全て' ? [...quizData] : quizData.filter(q => quizCatMap[q.answer] === quizCat);
+  startQuiz();
+}
 function startQuiz() {
   qIdx = 0; score = 0; wrongAnswers = [];
   document.getElementById('quiz-card').style.display = 'block';
   document.getElementById('score-screen').style.display = 'none';
+  if (filteredQuiz.length === 0) {
+    document.getElementById('quiz-card').innerHTML = '<div style="text-align:center;padding:40px;color:var(--gray)">このカテゴリのクイズはありません。</div>';
+    return;
+  }
   renderQuestion();
 }
 function renderQuestion() {
   answered = false;
-  const q = quizData[qIdx];
-  document.getElementById('quiz-progress').innerHTML = quizData.map((_, i) =>
+  const q = filteredQuiz[qIdx];
+  document.getElementById('quiz-progress').innerHTML = filteredQuiz.map((_, i) =>
     `<div class="prog-dot ${i < qIdx ? 'done' : i === qIdx ? 'current' : ''}"></div>`
   ).join('');
   document.getElementById('quiz-sentence').innerHTML =
@@ -932,13 +964,9 @@ function renderQuestion() {
 function answer(choice) {
   if (answered) return;
   answered = true;
-  const q = quizData[qIdx];
+  const q = filteredQuiz[qIdx];
   const isCorrect = choice === q.answer;
-  if (isCorrect) {
-    score++;
-  } else {
-    wrongAnswers.push({ q, chose: choice });
-  }
+  if (isCorrect) { score++; } else { wrongAnswers.push({ q, chose: choice }); }
   document.querySelectorAll('.opt-btn').forEach(btn => {
     btn.disabled = true;
     if (btn.textContent === q.answer) btn.classList.add('correct');
@@ -951,44 +979,39 @@ function answer(choice) {
 }
 function nextQuestion() {
   qIdx++;
-  if (qIdx >= quizData.length) {
-    showScoreScreen();
-  } else {
-    renderQuestion();
-  }
+  if (qIdx >= filteredQuiz.length) { showScoreScreen(); } else { renderQuestion(); }
 }
 function showScoreScreen() {
   document.getElementById('quiz-card').style.display = 'none';
   const screen = document.getElementById('score-screen');
   screen.style.display = 'block';
-  const total = quizData.length;
+  const total = filteredQuiz.length;
   const wrong = wrongAnswers.length;
   const pct = Math.round(score / total * 100);
-  let medal = pct === 100 ? '🏆' : pct >= 80 ? '🥇' : pct >= 60 ? '🥈' : '🥉';
-  let comment = pct === 100 ? '完璧です！全問正解！' : pct >= 80 ? 'すばらしい！' : pct >= 60 ? 'よくできました！' : 'もう少し練習しましょう！';
-  let wrongHTML = '';
-  if (wrongAnswers.length > 0) {
-    wrongHTML = `
-      <div style="margin-top:20px;text-align:left">
-        <div style="font-size:13px;color:var(--gray);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px">❌ 間違えた問題（${wrong}問）</div>
-        ${wrongAnswers.map(w => `
-          <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;font-size:13px">
-            <div style="color:var(--dark);margin-bottom:4px">${(w.q.before || '') + '<span style="border-bottom:2px solid var(--green);padding:0 4px;color:var(--green);font-weight:500"> ' + w.q.answer + ' </span>' + w.q.after}</div>
-            <div style="color:#ef4444">あなたの答え：${w.chose}</div>
-            <div style="color:var(--green)">正解：${w.q.answer}</div>
-            <div style="color:var(--gray);margin-top:4px;font-style:italic">${w.q.hint}</div>
+  const medal = pct === 100 ? '🏆' : pct >= 80 ? '🥇' : pct >= 60 ? '🥈' : '🥉';
+  const comment = pct === 100 ? '完璧です！全問正解！' : pct >= 80 ? 'すばらしい！' : pct >= 60 ? 'よくできました！' : 'もう少し練習しましょう！';
+  const wrongHTML = wrongAnswers.length > 0 ? `
+    <div style="margin-top:20px;text-align:left">
+      <div style="font-size:13px;color:var(--gray);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px">❌ 間違えた問題（${wrong}問）</div>
+      ${wrongAnswers.map(w => `
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px;font-size:13px">
+          <div style="color:var(--dark);margin-bottom:4px">${(w.q.before||'')}
+            <span style="border-bottom:2px solid var(--green);padding:0 4px;color:var(--green);font-weight:500">${w.q.answer}</span>${w.q.after}
           </div>
-        `).join('')}
-      </div>`;
-  }
+          <div style="color:#ef4444">あなたの答え：${w.chose}</div>
+          <div style="color:var(--green)">正解：${w.q.answer}</div>
+          <div style="color:var(--gray);margin-top:4px;font-style:italic">${w.q.hint}</div>
+        </div>`).join('')}
+    </div>` : '<div style="color:var(--green);font-size:14px;margin-top:12px">✓ 間違いなし！</div>';
   screen.innerHTML = `
     <div class="score-icon">${medal}</div>
     <div class="score-title">${comment}</div>
     <div class="score-num">${score} / ${total} 正解</div>
-    <div style="display:flex;justify-content:center;gap:20px;margin-bottom:16px;font-size:14px">
+    <div style="display:flex;justify-content:center;gap:20px;margin-bottom:16px;font-size:14px;flex-wrap:wrap">
       <span style="color:var(--green)">✓ 正解 ${score}問</span>
       <span style="color:#ef4444">✗ 不正解 ${wrong}問</span>
       <span style="color:var(--gray)">正答率 ${pct}%</span>
+      <span style="color:var(--gray)">カテゴリ：${quizCat}</span>
     </div>
     ${wrongHTML}
     <button class="retry-btn" style="margin-top:20px" onclick="startQuiz()">もう一度挑戦する</button>
@@ -997,13 +1020,32 @@ function showScoreScreen() {
 
 
 // ===== フラッシュカード =====
-let flashIdx = 0, flipped = false;
-function initFlash() { flashIdx = 0; renderFlash(); }
+let flashIdx = 0, flipped = false, flashCat = '全て', filteredFlashWords = [];
+
+function initFlash() {
+  flashCat = '全て';
+  const cats = ['全て', ...new Set(words.map(w => w.cat))];
+  document.getElementById('flash-cat-row').innerHTML = cats.map(c =>
+    `<button class="cat-btn ${c === flashCat ? 'active' : ''}" onclick="setFlashCat('${c}', this)">${c}</button>`
+  ).join('');
+  updateFilteredFlash();
+}
+function setFlashCat(cat, btn) {
+  flashCat = cat;
+  document.querySelectorAll('#flash-cat-row .cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  updateFilteredFlash();
+}
+function updateFilteredFlash() {
+  filteredFlashWords = flashCat === '全て' ? [...words] : words.filter(w => w.cat === flashCat);
+  flashIdx = 0;
+  renderFlash();
+}
 function renderFlash() {
   flipped = false;
-  const w = words[flashIdx];
+  const w = filteredFlashWords[flashIdx];
   document.getElementById('flash-card').classList.remove('flipped');
-  document.getElementById('flash-counter').textContent = (flashIdx + 1) + ' / ' + words.length;
+  document.getElementById('flash-counter').textContent = (flashIdx + 1) + ' / ' + filteredFlashWords.length + '（' + flashCat + '）';
   document.getElementById('flash-word').textContent = w.en;
   document.getElementById('flash-phonetic').textContent = w.phonetic;
   document.getElementById('flash-emoji').textContent = w.emoji;
@@ -1018,8 +1060,8 @@ function flipCard() {
     flashNext();
   }
 }
-function flashNext() { flashIdx = (flashIdx + 1) % words.length; renderFlash(); }
-function flashPrev() { flashIdx = (flashIdx - 1 + words.length) % words.length; renderFlash(); }
+function flashNext() { flashIdx = (flashIdx + 1) % filteredFlashWords.length; renderFlash(); }
+function flashPrev() { flashIdx = (flashIdx - 1 + filteredFlashWords.length) % filteredFlashWords.length; renderFlash(); }
 
 // ===== AI レシピ生成 =====
 let recipeLevel = 'beginner';
