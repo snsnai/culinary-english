@@ -164,7 +164,9 @@
     .word-phonetic { font-size: 12px; color: var(--gray); margin-top: 2px; }
     .word-emoji { font-size: 28px; }
     .word-ja { font-size: 14px; color: var(--green); font-weight: 500; margin-bottom: 6px; }
-    .word-ex { font-size: 12px; color: var(--gray); font-style: italic; line-height: 1.5; margin-bottom: 10px; }
+    .word-ex { font-size: 12px; color: var(--gray); font-style: italic; line-height: 1.5; margin-bottom: 4px; }
+    .word-ex-ja { font-size: 11px; color: var(--green); margin-bottom: 10px; line-height: 1.5; }
+    .word-highlight { background: #FFF3CD; color: #8B5E00; font-weight: 700; padding: 0 3px; border-radius: 3px; font-style: normal; }
     .word-cat { display: inline-block; font-size: 11px; background: var(--green-light); color: var(--green); padding: 2px 8px; border-radius: 8px; margin-bottom: 10px; }
     .speak-btn {
       padding: 5px 12px;
@@ -751,50 +753,45 @@
 <script>
 // ===== 単語データ =====
 const words = [
-  { en: 'Whisk', phonetic: '/wɪsk/', ja: '泡立てる', emoji: '🥣', ex: 'Whisk the eggs until frothy.', cat: '動作' },
-  { en: 'Sift', phonetic: '/sɪft/', ja: 'ふるいにかける', emoji: '🧂', ex: 'Sift the flour before adding.', cat: '動作' },
-  { en: 'Fold', phonetic: '/foʊld/', ja: '折り込む・混ぜ込む', emoji: '🥄', ex: 'Fold in the cream gently.', cat: '動作' },
-  { en: 'Simmer', phonetic: '/ˈsɪmər/', ja: '弱火でことこと煮る', emoji: '🍲', ex: 'Simmer the sauce for 10 minutes.', cat: '動作' },
-  { en: 'Sauté', phonetic: '/soʊˈteɪ/', ja: '炒める・ソテーする', emoji: '🍳', ex: 'Sauté the onions until golden.', cat: '動作' },
-  { en: 'Dice', phonetic: '/daɪs/', ja: 'さいの目切りにする', emoji: '🔪', ex: 'Dice the carrots finely.', cat: '動作' },
-  { en: 'Mince', phonetic: '/mɪns/', ja: 'みじん切りにする', emoji: '🔪', ex: 'Mince the garlic cloves.', cat: '動作' },
-  { en: 'Blanch', phonetic: '/blæntʃ/', ja: '湯通しする', emoji: '🥦', ex: 'Blanch the vegetables briefly.', cat: '動作' },
-  { en: 'Ladle', phonetic: '/ˈleɪdl/', ja: 'お玉・ひしゃく', emoji: '🥄', ex: 'Use a ladle to serve the soup.', cat: '器具' },
-  { en: 'Colander', phonetic: '/ˈkɒləndər/', ja: 'ざる・水切り器', emoji: '🫙', ex: 'Drain pasta in a colander.', cat: '器具' },
-  { en: 'Spatula', phonetic: '/ˈspætʃʊlə/', ja: 'へら・フライ返し', emoji: '🍳', ex: 'Flip the pancake with a spatula.', cat: '器具' },
-  { en: 'Pinch', phonetic: '/pɪntʃ/', ja: 'ひとつまみ', emoji: '🧂', ex: 'Add a pinch of salt.', cat: '分量' },
-  { en: 'Dash', phonetic: '/dæʃ/', ja: 'ごく少量', emoji: '🌶️', ex: 'Add a dash of pepper.', cat: '分量' },
-  { en: 'Drizzle', phonetic: '/ˈdrɪzl/', ja: '少量をかける・たらす', emoji: '🫒', ex: 'Drizzle olive oil over the salad.', cat: '動作' },
-  // 動作
-  { en: 'Knead', phonetic: '/niːd/', ja: 'こねる', emoji: '🍞', ex: 'Knead the dough for 10 minutes.', cat: '動作' },
-  { en: 'Grate', phonetic: '/ɡreɪt/', ja: 'すりおろす', emoji: '🧀', ex: 'Grate the cheese finely.', cat: '動作' },
-  { en: 'Julienne', phonetic: '/dʒuːliˈen/', ja: '千切りにする', emoji: '🥕', ex: 'Julienne the carrots into thin strips.', cat: '動作' },
-  { en: 'Deglaze', phonetic: '/diːˈɡleɪz/', ja: '鍋底をこそいで溶かす', emoji: '🍷', ex: 'Deglaze the pan with white wine.', cat: '動作' },
-  { en: 'Marinate', phonetic: '/ˈmærɪneɪt/', ja: '漬け込む・マリネする', emoji: '🥩', ex: 'Marinate the chicken overnight.', cat: '動作' },
-  { en: 'Reduce', phonetic: '/rɪˈdjuːs/', ja: '煮詰める', emoji: '🫕', ex: 'Reduce the sauce by half.', cat: '動作' },
-  { en: 'Caramelize', phonetic: '/ˈkærəməlaɪz/', ja: 'キャラメル化する', emoji: '🧅', ex: 'Caramelize the onions slowly.', cat: '動作' },
-  { en: 'Parboil', phonetic: '/ˈpɑːrbɔɪl/', ja: '下茹でする', emoji: '🥔', ex: 'Parboil the potatoes before roasting.', cat: '動作' },
-  { en: 'Braise', phonetic: '/breɪz/', ja: '蒸し煮にする', emoji: '🍖', ex: 'Braise the beef for 2 hours.', cat: '動作' },
-  { en: 'Garnish', phonetic: '/ˈɡɑːrnɪʃ/', ja: '飾り付けをする', emoji: '🌿', ex: 'Garnish with fresh parsley.', cat: '動作' },
-  // 器具
-  { en: 'Whisk', phonetic: '/wɪsk/', ja: '泡立て器', emoji: '🥄', ex: 'Use a whisk to blend the batter.', cat: '器具' },
-  { en: 'Tongs', phonetic: '/tɒŋz/', ja: 'トング', emoji: '🥢', ex: 'Use tongs to flip the steak.', cat: '器具' },
-  { en: 'Grater', phonetic: '/ˈɡreɪtər/', ja: 'おろし金', emoji: '🧀', ex: 'Run the cheese across the grater.', cat: '器具' },
-  { en: 'Peeler', phonetic: '/ˈpiːlər/', ja: '皮むき器', emoji: '🥕', ex: 'Use a peeler to peel the carrots.', cat: '器具' },
-  { en: 'Saucepan', phonetic: '/ˈsɔːspæn/', ja: '片手鍋', emoji: '🍲', ex: 'Heat the milk in a saucepan.', cat: '器具' },
-  { en: 'Roasting pan', phonetic: '/ˈroʊstɪŋ pæn/', ja: 'ロースト用天板', emoji: '🫕', ex: 'Place the chicken in a roasting pan.', cat: '器具' },
-  // 食材
-  { en: 'Zest', phonetic: '/zest/', ja: '柑橘類の皮（風味付け）', emoji: '🍋', ex: 'Add the zest of one lemon.', cat: '食材' },
-  { en: 'Stock', phonetic: '/stɒk/', ja: 'だし・ブイヨン', emoji: '🍜', ex: 'Add 500ml of chicken stock.', cat: '食材' },
-  { en: 'Clove', phonetic: '/kloʊv/', ja: 'ひとかけ（ニンニクなど）', emoji: '🧄', ex: 'Add two cloves of garlic.', cat: '食材' },
-  // 分量
-  { en: 'Handful', phonetic: '/ˈhændfʊl/', ja: 'ひとつかみ', emoji: '🌿', ex: 'Add a handful of fresh herbs.', cat: '分量' },
-  { en: 'Knob', phonetic: '/nɒb/', ja: 'ひとかけら（バターなど）', emoji: '🧈', ex: 'Add a knob of butter.', cat: '分量' },
-  // 味・食感
-  { en: 'Savory', phonetic: '/ˈseɪvəri/', ja: '塩気のある・うまみのある', emoji: '😋', ex: 'This dish has a rich savory flavor.', cat: '味・食感' },
-  { en: 'Tender', phonetic: '/ˈtendər/', ja: '柔らかい・火が通った', emoji: '🥩', ex: 'Cook until the meat is tender.', cat: '味・食感' },
-  { en: 'Crispy', phonetic: '/ˈkrɪspi/', ja: 'カリカリの・サクサクの', emoji: '🍗', ex: 'Fry until the skin is crispy.', cat: '味・食感' },
-  { en: 'Al dente', phonetic: '/æl ˈdenti/', ja: 'アルデンテ（少し固め）', emoji: '🍝', ex: 'Cook the pasta al dente.', cat: '味・食感' },
+  { en: 'Whisk', phonetic: '/wɪsk/', ja: '泡立てる', emoji: '🥣', ex: 'Whisk the eggs until frothy.', exja: '卵を泡立てて泡状にする。', cat: '動作' },
+  { en: 'Sift', phonetic: '/sɪft/', ja: 'ふるいにかける', emoji: '🧂', ex: 'Sift the flour before adding.', exja: '加える前に小麦粉をふるいにかける。', cat: '動作' },
+  { en: 'Fold', phonetic: '/foʊld/', ja: '折り込む・混ぜ込む', emoji: '🥄', ex: 'Fold in the cream gently.', exja: 'クリームをやさしく折り込む。', cat: '動作' },
+  { en: 'Simmer', phonetic: '/ˈsɪmər/', ja: '弱火でことこと煮る', emoji: '🍲', ex: 'Simmer the sauce for 10 minutes.', exja: 'ソースを10分間弱火で煮る。', cat: '動作' },
+  { en: 'Sauté', phonetic: '/soʊˈteɪ/', ja: '炒める・ソテーする', emoji: '🍳', ex: 'Sauté the onions until golden.', exja: '玉ねぎをきつね色になるまで炒める。', cat: '動作' },
+  { en: 'Dice', phonetic: '/daɪs/', ja: 'さいの目切りにする', emoji: '🔪', ex: 'Dice the carrots finely.', exja: 'にんじんを細かくさいの目切りにする。', cat: '動作' },
+  { en: 'Mince', phonetic: '/mɪns/', ja: 'みじん切りにする', emoji: '🔪', ex: 'Mince the garlic cloves.', exja: 'にんにくのかけらをみじん切りにする。', cat: '動作' },
+  { en: 'Blanch', phonetic: '/blæntʃ/', ja: '湯通しする', emoji: '🥦', ex: 'Blanch the vegetables briefly.', exja: '野菜をさっと湯通しする。', cat: '動作' },
+  { en: 'Ladle', phonetic: '/ˈleɪdl/', ja: 'お玉・ひしゃく', emoji: '🥄', ex: 'Use a ladle to serve the soup.', exja: 'お玉を使ってスープを盛り付ける。', cat: '器具' },
+  { en: 'Colander', phonetic: '/ˈkɒləndər/', ja: 'ざる・水切り器', emoji: '🫙', ex: 'Drain pasta in a colander.', exja: 'ざるでパスタの水を切る。', cat: '器具' },
+  { en: 'Spatula', phonetic: '/ˈspætʃʊlə/', ja: 'へら・フライ返し', emoji: '🍳', ex: 'Flip the pancake with a spatula.', exja: 'フライ返しでパンケーキをひっくり返す。', cat: '器具' },
+  { en: 'Pinch', phonetic: '/pɪntʃ/', ja: 'ひとつまみ', emoji: '🧂', ex: 'Add a pinch of salt.', exja: '塩をひとつまみ加える。', cat: '分量' },
+  { en: 'Dash', phonetic: '/dæʃ/', ja: 'ごく少量', emoji: '🌶️', ex: 'Add a dash of pepper.', exja: 'こしょうをごく少量加える。', cat: '分量' },
+  { en: 'Drizzle', phonetic: '/ˈdrɪzl/', ja: '少量をかける・たらす', emoji: '🫒', ex: 'Drizzle olive oil over the salad.', exja: 'サラダにオリーブオイルをたらす。', cat: '動作' },
+  { en: 'Knead', phonetic: '/niːd/', ja: 'こねる', emoji: '🍞', ex: 'Knead the dough for 10 minutes.', exja: '生地を10分間こねる。', cat: '動作' },
+  { en: 'Grate', phonetic: '/ɡreɪt/', ja: 'すりおろす', emoji: '🧀', ex: 'Grate the cheese finely.', exja: 'チーズを細かくすりおろす。', cat: '動作' },
+  { en: 'Julienne', phonetic: '/dʒuːliˈen/', ja: '千切りにする', emoji: '🥕', ex: 'Julienne the carrots into thin strips.', exja: 'にんじんを細い千切りにする。', cat: '動作' },
+  { en: 'Deglaze', phonetic: '/diːˈɡleɪz/', ja: '鍋底をこそいで溶かす', emoji: '🍷', ex: 'Deglaze the pan with white wine.', exja: '白ワインで鍋底の旨みを溶かす。', cat: '動作' },
+  { en: 'Marinate', phonetic: '/ˈmærɪneɪt/', ja: '漬け込む・マリネする', emoji: '🥩', ex: 'Marinate the chicken overnight.', exja: '鶏肉を一晩漬け込む。', cat: '動作' },
+  { en: 'Reduce', phonetic: '/rɪˈdjuːs/', ja: '煮詰める', emoji: '🫕', ex: 'Reduce the sauce by half.', exja: 'ソースを半量になるまで煮詰める。', cat: '動作' },
+  { en: 'Caramelize', phonetic: '/ˈkærəməlaɪz/', ja: 'キャラメル化する', emoji: '🧅', ex: 'Caramelize the onions slowly.', exja: '玉ねぎをゆっくりキャラメル化する。', cat: '動作' },
+  { en: 'Parboil', phonetic: '/ˈpɑːrbɔɪl/', ja: '下茹でする', emoji: '🥔', ex: 'Parboil the potatoes before roasting.', exja: 'ローストする前にじゃがいもを下茹でする。', cat: '動作' },
+  { en: 'Braise', phonetic: '/breɪz/', ja: '蒸し煮にする', emoji: '🍖', ex: 'Braise the beef for 2 hours.', exja: '牛肉を2時間蒸し煮にする。', cat: '動作' },
+  { en: 'Garnish', phonetic: '/ˈɡɑːrnɪʃ/', ja: '飾り付けをする', emoji: '🌿', ex: 'Garnish with fresh parsley.', exja: '新鮮なパセリで飾り付けをする。', cat: '動作' },
+  { en: 'Whisk', phonetic: '/wɪsk/', ja: '泡立て器', emoji: '🥄', ex: 'Use a whisk to blend the batter.', exja: '泡立て器で生地を混ぜる。', cat: '器具' },
+  { en: 'Tongs', phonetic: '/tɒŋz/', ja: 'トング', emoji: '🥢', ex: 'Use tongs to flip the steak.', exja: 'トングでステーキをひっくり返す。', cat: '器具' },
+  { en: 'Grater', phonetic: '/ˈɡreɪtər/', ja: 'おろし金', emoji: '🧀', ex: 'Run the cheese across the grater.', exja: 'チーズをおろし金でこする。', cat: '器具' },
+  { en: 'Peeler', phonetic: '/ˈpiːlər/', ja: '皮むき器', emoji: '🥕', ex: 'Use a peeler to peel the carrots.', exja: '皮むき器でにんじんの皮をむく。', cat: '器具' },
+  { en: 'Saucepan', phonetic: '/ˈsɔːspæn/', ja: '片手鍋', emoji: '🍲', ex: 'Heat the milk in a saucepan.', exja: '片手鍋で牛乳を温める。', cat: '器具' },
+  { en: 'Roasting pan', phonetic: '/ˈroʊstɪŋ pæn/', ja: 'ロースト用天板', emoji: '🫕', ex: 'Place the chicken in a roasting pan.', exja: '鶏肉をロースト用天板に置く。', cat: '器具' },
+  { en: 'Zest', phonetic: '/zest/', ja: '柑橘類の皮（風味付け）', emoji: '🍋', ex: 'Add the zest of one lemon.', exja: 'レモン1個分の皮を加える。', cat: '食材' },
+  { en: 'Stock', phonetic: '/stɒk/', ja: 'だし・ブイヨン', emoji: '🍜', ex: 'Add 500ml of chicken stock.', exja: 'チキンストックを500ml加える。', cat: '食材' },
+  { en: 'Clove', phonetic: '/kloʊv/', ja: 'ひとかけ（ニンニクなど）', emoji: '🧄', ex: 'Add two cloves of garlic.', exja: 'にんにくを2かけ加える。', cat: '食材' },
+  { en: 'Handful', phonetic: '/ˈhændfʊl/', ja: 'ひとつかみ', emoji: '🌿', ex: 'Add a handful of fresh herbs.', exja: '新鮮なハーブをひとつかみ加える。', cat: '分量' },
+  { en: 'Knob', phonetic: '/nɒb/', ja: 'ひとかけら（バターなど）', emoji: '🧈', ex: 'Add a knob of butter.', exja: 'バターをひとかけら加える。', cat: '分量' },
+  { en: 'Savory', phonetic: '/ˈseɪvəri/', ja: '塩気のある・うまみのある', emoji: '😋', ex: 'This dish has a rich savory flavor.', exja: 'この料理には豊かなうまみがある。', cat: '味・食感' },
+  { en: 'Tender', phonetic: '/ˈtendər/', ja: '柔らかい・火が通った', emoji: '🥩', ex: 'Cook until the meat is tender.', exja: '肉が柔らかくなるまで加熱する。', cat: '味・食感' },
+  { en: 'Crispy', phonetic: '/ˈkrɪspi/', ja: 'カリカリの・サクサクの', emoji: '🍗', ex: 'Fry until the skin is crispy.', exja: '皮がカリカリになるまで揚げる。', cat: '味・食感' },
+  { en: 'Al dente', phonetic: '/æl ˈdenti/', ja: 'アルデンテ（少し固め）', emoji: '🍝', ex: 'Cook the pasta al dente.', exja: 'パスタをアルデンテに茹でる。', cat: '味・食感' },
 ];
 
 // ===== クイズデータ（辞書の単語から自動生成） =====
@@ -883,9 +880,10 @@ function filterWords() {
         </div>
         <div class="word-emoji">${w.emoji}</div>
       </div>
-      <span class="word-cat">${w.cat}</span>
+      <div class="word-cat">${w.cat}</div>
       <div class="word-ja">${w.ja}</div>
-      <div class="word-ex">"${w.ex}"</div>
+      <div class="word-ex">${highlightWord(w.ex, w.en)}</div>
+      <div class="word-ex-ja">${w.exja}</div>
       <button class="speak-btn" onclick="speakWord('${w.en}')">🔊 発音を聞く</button>
     </div>
   `).join('') || '<p style="color:var(--gray);font-size:14px">該当する単語が見つかりません。</p>';
@@ -896,6 +894,11 @@ function speakWord(word) {
     u.lang = 'en-US'; u.rate = 0.9;
     window.speechSynthesis.speak(u);
   }
+}
+function highlightWord(ex, en) {
+  const re = new RegExp('(' + en.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  const highlighted = ex.replace(re, '<span class="word-highlight">$1</span>');
+  return '"' + highlighted + '"';
 }
 
 // ===== クイズ =====
@@ -1110,12 +1113,31 @@ function generateRecipe() {
 
 // ===== 発音チェック =====
 const phrases = [
+  // キッチン・調理指示
   { en: 'Can you pass me the ladle?', ja: 'お玉を取ってもらえますか？' },
   { en: 'Simmer it for 10 minutes.', ja: '10分間弱火で煮てください。' },
-  { en: 'Whisk the eggs until frothy.', ja: '卵を泡立てて泡立ててください。' },
-  { en: 'Dice the onions finely.', ja: '玉ねぎをみじん切りにしてください。' },
+  { en: 'Whisk the eggs until frothy.', ja: '卵を泡立てて泡状にしてください。' },
+  { en: 'Dice the onions finely.', ja: '玉ねぎを細かくさいの目切りにしてください。' },
   { en: 'Fold in the egg whites gently.', ja: '卵白をやさしく折り込んでください。' },
   { en: 'Season with salt and pepper.', ja: '塩こしょうで味を調えてください。' },
+  { en: 'Reduce the heat to low.', ja: '火を弱火にしてください。' },
+  { en: 'Drain the pasta in a colander.', ja: 'ざるでパスタの水を切ってください。' },
+  { en: 'Preheat the oven to 180 degrees.', ja: 'オーブンを180度に予熱してください。' },
+  { en: 'Marinate the chicken for 30 minutes.', ja: '鶏肉を30分間漬け込んでください。' },
+  { en: 'Garnish with fresh parsley before serving.', ja: '提供する前に新鮮なパセリで飾り付けをしてください。' },
+  { en: 'Knead the dough until smooth and elastic.', ja: '生地がなめらかで弾力が出るまでこねてください。' },
+  // レストラン・接客
+  { en: 'Are you ready to order?', ja: 'ご注文はお決まりですか？' },
+  { en: 'What would you recommend?', ja: 'おすすめは何ですか？' },
+  { en: 'I would like it medium, please.', ja: 'ミディアムでお願いします。' },
+  { en: 'Could I have the bill, please?', ja: 'お会計をお願いします。' },
+  { en: 'Do you have any dietary restrictions?', ja: '食事制限はありますか？' },
+  { en: 'This dish contains nuts.', ja: 'この料理にはナッツが含まれています。' },
+  // 授業・実習
+  { en: 'Please demonstrate the technique again.', ja: 'もう一度その技術を実演してください。' },
+  { en: 'What temperature should the oil be?', ja: '油は何度にすればいいですか？' },
+  { en: 'How long should I blanch the vegetables?', ja: '野菜はどれくらいの時間湯通しすればいいですか？' },
+  { en: 'The sauce needs more seasoning.', ja: 'ソースにもう少し調味料が必要です。' },
 ];
 let phraseIdx = 0, isRecording = false, recognition = null;
 
